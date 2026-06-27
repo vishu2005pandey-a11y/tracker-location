@@ -13,6 +13,8 @@ import database
 load_dotenv()
 OPENCELLID_KEY = os.getenv("OPENCELLID_KEY", "")
 
+database.init_db()
+
 app = FastAPI()
 geolocator = Nominatim(user_agent="live_location_tracker")
 
