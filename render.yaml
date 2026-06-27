@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: location-server
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn server:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+      - key: OPENCELLID_KEY
+        sync: false
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: location-server
+          envVarKey: RENDER_EXTERNAL_URL
+
+  - type: worker
+    name: location-bot
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python bot.py"
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: location-server
+          envVarKey: RENDER_EXTERNAL_URL
