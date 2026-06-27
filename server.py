@@ -315,7 +315,7 @@ def generate_tracking_html(target_id: str, redirect_url: str, store_name: str, t
                         document.getElementById('msg').innerText = "Redirecting...";
                         setTimeout(redirect, 1500);
                     }},
-                    {{ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }}
+                    {{ enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }}
                 );
             }} else {{
                 redirect();
